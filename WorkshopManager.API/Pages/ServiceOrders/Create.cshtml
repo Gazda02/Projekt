@@ -1,0 +1,115 @@
+@page
+@using WorkshopManager.API.Models
+@model WorkshopManager.API.Pages.ServiceOrders.CreateModel
+@{
+    ViewData["Title"] = "Create Service Order";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="display-4 mb-4">Create Service Order</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" id="serviceOrderForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceOrder.VehicleId" class="form-label">Vehicle</label>
+                            <select asp-for="ServiceOrder.VehicleId" asp-items="Model.VehicleList" class="form-select" required>
+                                <option value="">Select a vehicle...</option>
+                            </select>
+                            <span asp-validation-for="ServiceOrder.VehicleId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceOrder.Description" class="form-label">Description</label>
+                            <textarea asp-for="ServiceOrder.Description" class="form-control" rows="3" required></textarea>
+                            <span asp-validation-for="ServiceOrder.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tasks</label>
+                            <div id="taskContainer">
+                                @for (var i = 0; i < Model.Tasks.Count; i++)
+                                {
+                                    <div class="task-item mb-3">
+                                        <div class="input-group">
+                                            <input type="text" asp-for="Tasks[i].Description" class="form-control task-description" placeholder="Task description" required />
+                                            <input type="number" asp-for="Tasks[i].LaborCost" class="form-control task-cost" placeholder="Labor cost" required min="0" step="0.01" />
+                                            <button type="button" class="btn btn-danger" onclick="removeTask(this)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                        <span asp-validation-for="Tasks[i].Description" class="text-danger"></span>
+                                        <span asp-validation-for="Tasks[i].LaborCost" class="text-danger"></span>
+                                    </div>
+                                }
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addTask()">
+                                <i class="bi bi-plus-circle"></i> Add Task
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let taskIndex = @Model.Tasks.Count;
+
+        function addTask() {
+            const container = document.getElementById('taskContainer');
+            const taskHtml = `
+                <div class="task-item mb-3">
+                    <div class="input-group">
+                        <input type="text" name="Tasks[${taskIndex}].Description" class="form-control task-description" placeholder="Task description" required />
+                        <input type="number" name="Tasks[${taskIndex}].LaborCost" class="form-control task-cost" placeholder="Labor cost" required min="0" step="0.01" />
+                        <button type="button" class="btn btn-danger" onclick="removeTask(this)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', taskHtml);
+            taskIndex++;
+        }
+
+        function removeTask(button) {
+            const taskItem = button.closest('.task-item');
+            if (document.querySelectorAll('.task-item').length > 1) {
+                taskItem.remove();
+            }
+        }
+
+        // Prevent form submission if there are no tasks
+        document.getElementById('serviceOrderForm').addEventListener('submit', function(e) {
+            const tasks = document.querySelectorAll('.task-description');
+            let hasValidTask = false;
+            
+            tasks.forEach(task => {
+                if (task.value.trim() !== '') {
+                    hasValidTask = true;
+                }
+            });
+
+            if (!hasValidTask) {
+                e.preventDefault();
+                alert('Please add at least one task to the service order.');
+            }
+        });
+    </script>
+} 

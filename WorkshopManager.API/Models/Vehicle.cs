@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WorkshopManager.API.Models;
 
@@ -32,4 +33,7 @@ public class Vehicle
     // Navigation properties
     public Customer? Customer { get; set; }
     public ICollection<ServiceOrder> ServiceOrders { get; set; } = new List<ServiceOrder>();
+
+    [NotMapped]
+    public string DisplayName => $"{Year} {Make} {Model} - {Customer?.FirstName} {Customer?.LastName}";
 } 

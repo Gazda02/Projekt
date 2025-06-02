@@ -1,0 +1,60 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4 page-title">Welcome to Car Workshop Manager</h1>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Service Orders</h5>
+                <p class="card-text">Manage service orders, track progress, and update status.</p>
+                <a asp-page="/ServiceOrders/Index" class="btn btn-primary">View Orders</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Vehicles</h5>
+                <p class="card-text">View and manage vehicle information and service history.</p>
+                <a asp-page="/Vehicles/Index" class="btn btn-primary">Manage Vehicles</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Customers</h5>
+                <p class="card-text">Access customer information and service history.</p>
+                <a asp-page="/Customers/Index" class="btn btn-primary">View Customers</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">Generate and view various reports including service history and financial reports.</p>
+                <a asp-page="/Reports/Index" class="btn btn-primary">Access Reports</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Inventory</h5>
+                <p class="card-text">Manage parts inventory, track stock levels, and order supplies.</p>
+                <a asp-page="/Inventory/Index" class="btn btn-primary">Check Inventory</a>
+            </div>
+        </div>
+    </div>
+</div> 

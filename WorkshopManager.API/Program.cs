@@ -10,6 +10,7 @@ using WorkshopManager.API.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
 // Configure DbContext
@@ -64,7 +65,9 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IServiceOrderService, ServiceOrderService>();
 builder.Services.AddScoped<IPartService, PartService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IServiceTaskService, ServiceTaskService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 var app = builder.Build();
 
@@ -77,11 +80,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRouting();
 
 // Add authentication & authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllers();
 
 // Create default roles

@@ -38,6 +38,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.5, )"
@@ -70,7 +74,7 @@
             },
             "itext7": {
               "target": "Package",
-              "version": "[8.0.2, )"
+              "version": "[9.2.0, )"
             }
           },
           "imports": [

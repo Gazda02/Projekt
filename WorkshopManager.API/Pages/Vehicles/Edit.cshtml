@@ -1,0 +1,80 @@
+@page "{id:int}"
+@model WorkshopManager.API.Pages.Vehicles.EditModel
+@{
+    ViewData["Title"] = "Edit Vehicle";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="display-4 mb-4">Edit Vehicle</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Vehicle.Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Vehicle.CustomerId" class="form-label">Owner</label>
+                            <select asp-for="Vehicle.CustomerId" asp-items="Model.CustomerList" class="form-select">
+                                <option value="">Select an owner...</option>
+                            </select>
+                            <span asp-validation-for="Vehicle.CustomerId" class="text-danger"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="Vehicle.Make" class="form-label">Make</label>
+                                <input asp-for="Vehicle.Make" class="form-control" />
+                                <span asp-validation-for="Vehicle.Make" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Vehicle.Model" class="form-label">Model</label>
+                                <input asp-for="Vehicle.Model" class="form-control" />
+                                <span asp-validation-for="Vehicle.Model" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Vehicle.Year" class="form-label">Year</label>
+                                <input asp-for="Vehicle.Year" class="form-control" type="number" min="1900" max="@DateTime.Now.Year" />
+                                <span asp-validation-for="Vehicle.Year" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Vehicle.VIN" class="form-label">VIN</label>
+                                <input asp-for="Vehicle.VIN" class="form-control" maxlength="17" />
+                                <span asp-validation-for="Vehicle.VIN" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Vehicle.RegistrationNumber" class="form-label">Registration Number</label>
+                                <input asp-for="Vehicle.RegistrationNumber" class="form-control" maxlength="20" />
+                                <span asp-validation-for="Vehicle.RegistrationNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Vehicle.ImageUrl" class="form-label">Image URL</label>
+                            <input asp-for="Vehicle.ImageUrl" class="form-control" />
+                            <span asp-validation-for="Vehicle.ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="./Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

@@ -18,6 +18,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Part> Parts { get; set; } = null!;
     public DbSet<UsedPart> UsedParts { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<FileUpload> FileUploads { get; set; } = null!;
+    public DbSet<Report> Reports { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -80,6 +82,24 @@ public class ApplicationDbContext : IdentityDbContext
             .WithMany(so => so.Comments)
             .HasForeignKey(c => c.ServiceOrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Report>()
+            .HasOne(r => r.Vehicle)
+            .WithMany()
+            .HasForeignKey(r => r.VehicleId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Report>()
+            .HasOne(r => r.ServiceOrder)
+            .WithMany()
+            .HasForeignKey(r => r.ServiceOrderId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Report>()
+            .HasOne(r => r.Customer)
+            .WithMany()
+            .HasForeignKey(r => r.CustomerId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         // Indexes
         builder.Entity<Customer>()

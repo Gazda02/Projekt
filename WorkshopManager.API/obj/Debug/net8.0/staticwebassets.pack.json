@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/wwwroot/css/site.css",
+      "PackagePath": "staticwebassets/css/site.css"
+    },
+    {
+      "Id": "/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/wwwroot/js/site.js",
+      "PackagePath": "staticwebassets/js/site.js"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.WorkshopManager.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.WorkshopManager.API.props",
+      "PackagePath": "build\\WorkshopManager.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.WorkshopManager.API.props",
+      "PackagePath": "buildMultiTargeting\\WorkshopManager.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.WorkshopManager.API.props",
+      "PackagePath": "buildTransitive\\WorkshopManager.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

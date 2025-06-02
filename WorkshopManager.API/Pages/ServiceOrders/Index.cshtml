@@ -1,0 +1,90 @@
+@page
+@using WorkshopManager.API.Models
+@model WorkshopManager.API.Pages.ServiceOrders.IndexModel
+@{
+    ViewData["Title"] = "Service Orders";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4">Service Orders</h1>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> New Service Order
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Vehicle</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Total Cost</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.ServiceOrders)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@($"{order.Vehicle?.Year} {order.Vehicle?.Make} {order.Vehicle?.Model}")</td>
+                                <td>@($"{order.Vehicle?.Customer?.FirstName} {order.Vehicle?.Customer?.LastName}")</td>
+                                <td>
+                                    <span class="badge bg-@(order.Status switch {
+                                        OrderStatus.Created => "warning",
+                                        OrderStatus.InProgress => "info",
+                                        OrderStatus.Completed => "success",
+                                        OrderStatus.Cancelled => "danger",
+                                        _ => "secondary"
+                                    })">@order.Status</span>
+                                </td>
+                                <td>@order.CreatedAt.ToString("g")</td>
+                                <td>@order.TotalCost.ToString("C")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-page="Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-page="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal@(order.Id)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteModal@(order.Id)" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Confirm Delete</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete Service Order #@order.Id?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="post" asp-page-handler="Delete" asp-route-id="@order.Id" class="d-inline">
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 
