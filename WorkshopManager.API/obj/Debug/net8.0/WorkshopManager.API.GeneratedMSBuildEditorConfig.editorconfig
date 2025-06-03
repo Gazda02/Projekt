@@ -9,59 +9,61 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WorkshopManager.API
 build_property.RootNamespace = WorkshopManager.API
-build_property.ProjectDir = /home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/
+build_property.ProjectDir = C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API
+build_property.MSBuildProjectDirectory = C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/ServiceOrders/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljZU9yZGVycy9DcmVhdGUuY3NodG1s
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/ServiceOrders/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljZU9yZGVyc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/ServiceOrders/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljZU9yZGVycy9EZXRhaWxzLmNzaHRtbA==
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/ServiceOrders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljZU9yZGVyc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/ServiceOrders/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljZU9yZGVycy9JbmRleC5jc2h0bWw=
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/ServiceOrders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljZU9yZGVyc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Vehicles/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVoaWNsZXMvQ3JlYXRlLmNzaHRtbA==
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Vehicles/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Vehicles/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVoaWNsZXMvRGV0YWlscy5jc2h0bWw=
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Vehicles/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Vehicles/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVoaWNsZXMvRWRpdC5jc2h0bWw=
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Vehicles/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/Vehicles/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVoaWNsZXMvSW5kZXguY3NodG1s
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/Vehicles/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/Pages/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

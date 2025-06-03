@@ -59,11 +59,12 @@ public class ServiceOrderService : IServiceOrderService
     {
         order.CreatedAt = DateTime.UtcNow;
         order.Status = OrderStatus.Created;
-        
+
         _context.ServiceOrders.Add(order);
         await _context.SaveChangesAsync();
-        
+
         _logger.LogInformation("Created new service order with ID {Id}", order.Id);
+
         return order;
     }
 

@@ -72,8 +72,11 @@ public class CreateModel : PageModel
         ServiceOrder.Tasks = validTasks;
 
         _context.ServiceOrders.Add(ServiceOrder);
+        
+        Console.WriteLine("Attempting to save order:");
+        Console.WriteLine($"VehicleId: {ServiceOrder.VehicleId}");
+        Console.WriteLine($"Tasks count: {ServiceOrder.Tasks?.Count}");
         await _context.SaveChangesAsync();
-
         return RedirectToPage("./Index");
     }
 } 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using WorkshopManager.API.Data;
 using WorkshopManager.API.Services;
 using WorkshopManager.API.Services.Interfaces;
@@ -56,6 +57,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // pozwól na ignorowanie cykli (nie zwraca ponownie referencji, tylko je pomija)
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        // opcjonalnie możesz zwiększyć maksymalną głębokość (domyślnie 32)
+        options.JsonSerializerOptions.MaxDepth = 64;
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -78,9 +89,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 
 // Add authentication & authorization
 app.UseAuthentication();
