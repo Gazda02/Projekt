@@ -1,0 +1,36 @@
+@page
+@model CustomersIndexModel
+@{
+    ViewData["Title"] = "Klienci";
+}
+
+<h2>Klienci</h2>
+<a class="btn btn-primary mb-3" asp-page="Create">Dodaj klienta</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Telefon</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var customer in Model.Customers)
+    {
+        <tr>
+            <td>@customer.FirstName</td>
+            <td>@customer.LastName</td>
+            <td>@customer.Email</td>
+            <td>@customer.PhoneNumber</td>
+            <td>
+                <a class="btn btn-sm btn-warning" asp-page="Edit" asp-route-id="@customer.Id">Edytuj</a>
+                <form method="post" asp-page-handler="Delete" asp-route-id="@customer.Id" style="display:inline">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Na pewno usunąć?')">Usuń</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table> 

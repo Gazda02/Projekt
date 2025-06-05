@@ -1,0 +1,32 @@
+@page "{id}"
+@model EditUserModel
+@{
+    ViewData["Title"] = "Edytuj użytkownika";
+}
+
+<h2>Edytuj użytkownika</h2>
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" value="@Model.Email" readonly />
+    </div>
+    <div class="mb-3">
+        <label asp-for="SelectedRole" class="form-label"></label>
+        <select asp-for="SelectedRole" asp-items="Model.RoleList" class="form-select"></select>
+        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NewPassword" class="form-label">Nowe hasło (opcjonalnie)</label>
+        <input asp-for="NewPassword" type="text" class="form-control" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Zapisz</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Anuluj</a>
+</form>
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-2">@Model.ErrorMessage</div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

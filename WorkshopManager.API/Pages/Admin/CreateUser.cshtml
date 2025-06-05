@@ -1,0 +1,33 @@
+@page
+@model CreateUserModel
+@{
+    ViewData["Title"] = "Dodaj użytkownika";
+}
+
+<h2>Dodaj użytkownika</h2>
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label"></label>
+        <input asp-for="Input.Email" class="form-control" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Password" class="form-label"></label>
+        <input asp-for="Input.Password" type="text" class="form-control" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Role" class="form-label"></label>
+        <select asp-for="Input.Role" asp-items="Model.RoleList" class="form-select"></select>
+        <span asp-validation-for="Input.Role" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Dodaj</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Anuluj</a>
+</form>
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-2">@Model.ErrorMessage</div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

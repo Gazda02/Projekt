@@ -19,6 +19,11 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
+        if (!Request.Cookies.ContainsKey("jwt_token"))
+        {
+            Response.Redirect("/Login");
+            return;
+        }
         ServiceOrders = await _context.ServiceOrders
             .Include(so => so.Vehicle)
                 .ThenInclude(v => v.Customer)

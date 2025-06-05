@@ -13,6 +13,11 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
+        if (!Request.Cookies.ContainsKey("jwt_token"))
+        {
+            Response.Redirect("/Login");
+            return;
+        }
         _logger.LogInformation("Dashboard page accessed at: {Time}", DateTime.UtcNow);
     }
 } 

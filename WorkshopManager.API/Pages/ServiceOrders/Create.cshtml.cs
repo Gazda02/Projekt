@@ -26,6 +26,11 @@ public class CreateModel : PageModel
 
     public async Task OnGetAsync(int? vehicleId = null)
     {
+        if (!Request.Cookies.ContainsKey("jwt_token"))
+        {
+            Response.Redirect("/Login");
+            return;
+        }
         // Get vehicles with customer information for the dropdown
         var vehicles = await _context.Vehicles
             .Include(v => v.Customer)

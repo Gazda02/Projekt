@@ -12,6 +12,12 @@
         </a>
     </div>
 
+    <form method="get" class="mb-3 d-flex" style="max-width: 500px;">
+        <input type="text" name="search" value="@Request.Query["search"]" class="form-control me-2" placeholder="Szukaj po VIN lub nr rejestracyjnym..." />
+        <button type="submit" class="btn btn-outline-primary">Szukaj</button>
+        <a asp-page="Index" class="btn btn-outline-secondary ms-2">Wyczyść</a>
+    </form>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">

@@ -17,10 +17,19 @@ public class IndexModel : PageModel
 
     public IList<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(string? search = null)
     {
-        Vehicles = await _context.Vehicles
-            .Include(v => v.Customer)
+        if (!Request.Cookies.ContainsKey("jwt_token"))
+        {
+            Response.Redirect("/Login");
+            return;
+        }
+        var query = _context.Vehicles.Include(v => v.Customer).AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(v => v.VIN.Contains(search) || v.RegistrationNumber.Contains(search));
+        }
+        Vehicles = await query
             .OrderBy(v => v.Customer.LastName)
             .ThenBy(v => v.Customer.FirstName)
             .ToListAsync();

@@ -44,6 +44,47 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @{
+                            string userName = null;
+                            string userRole = null;
+                            var jwtCookie = Context.Request.Cookies["jwt_token"];
+                            if (!string.IsNullOrEmpty(jwtCookie))
+                            {
+                                try
+                                {
+                                    var handler = new JwtSecurityTokenHandler();
+                                    var jwt = handler.ReadJwtToken(jwtCookie);
+                                    userName = jwt.Claims.FirstOrDefault(c => c.Type == "email" || c.Type == "unique_name" || c.Type == "name")?.Value;
+                                    userRole = jwt.Claims.FirstOrDefault
+                                    (
+                                        c => c.Type == "role" || c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                                    )?.Value;
+                                }
+                                catch { }
+                            }
+                        }
+                        @if (userRole == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Admin/Index">
+                                    <i class="bi bi-shield-lock"></i> Zarządzaj
+                                </a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(userName))
+                        {
+                            <li class="nav-item d-flex align-items-center me-2 text-white">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="ms-1">@userName</span>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" asp-page="/Logout">
+                                <i class="bi bi-box-arrow-right"></i> Wyloguj
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

@@ -23,6 +23,12 @@ public class CreateModel : PageModel
 
     public async Task OnGetAsync()
     {
+        if (!Request.Cookies.ContainsKey("jwt_token"))
+        {
+            Response.Redirect("/Login");
+            return;
+        }
+
         var customers = await _context.Customers
             .OrderBy(c => c.LastName)
             .ThenBy(c => c.FirstName)

@@ -1,0 +1,29 @@
+@page
+@model AdminIndexModel
+@{
+    ViewData["Title"] = "Zarządzaj użytkownikami";
+}
+
+<h2>Zarządzaj użytkownikami</h2>
+<a class="btn btn-primary mb-3" asp-page="CreateUser">Dodaj nowe konto</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@string.Join(", ", user.Roles)</td>
+            <td>
+                <a class="btn btn-sm btn-warning" asp-page="EditUser" asp-route-id="@user.Id">Edytuj</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table> 
