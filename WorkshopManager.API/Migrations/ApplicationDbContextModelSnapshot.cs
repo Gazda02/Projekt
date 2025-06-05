@@ -273,6 +273,45 @@ namespace WorkshopManager.API.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("WorkshopManager.API.Models.FileUpload", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("ServiceOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceOrderId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("FileUploads");
+                });
+
             modelBuilder.Entity("WorkshopManager.API.Models.Part", b =>
                 {
                     b.Property<int>("Id")
@@ -305,6 +344,57 @@ namespace WorkshopManager.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Parts");
+                });
+
+            modelBuilder.Entity("WorkshopManager.API.Models.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("GeneratedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ServiceOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ServiceOrderId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("WorkshopManager.API.Models.ServiceOrder", b =>
@@ -388,12 +478,17 @@ namespace WorkshopManager.API.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("ServiceOrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ServiceTaskId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PartId");
+
+                    b.HasIndex("ServiceOrderId");
 
                     b.HasIndex("ServiceTaskId");
 
@@ -510,6 +605,45 @@ namespace WorkshopManager.API.Migrations
                     b.Navigation("ServiceOrder");
                 });
 
+            modelBuilder.Entity("WorkshopManager.API.Models.FileUpload", b =>
+                {
+                    b.HasOne("WorkshopManager.API.Models.ServiceOrder", "ServiceOrder")
+                        .WithMany()
+                        .HasForeignKey("ServiceOrderId");
+
+                    b.HasOne("WorkshopManager.API.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId");
+
+                    b.Navigation("ServiceOrder");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("WorkshopManager.API.Models.Report", b =>
+                {
+                    b.HasOne("WorkshopManager.API.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WorkshopManager.API.Models.ServiceOrder", "ServiceOrder")
+                        .WithMany()
+                        .HasForeignKey("ServiceOrderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("WorkshopManager.API.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ServiceOrder");
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("WorkshopManager.API.Models.ServiceOrder", b =>
                 {
                     b.HasOne("WorkshopManager.API.Models.Vehicle", "Vehicle")
@@ -538,6 +672,12 @@ namespace WorkshopManager.API.Migrations
                         .WithMany("UsedInTasks")
                         .HasForeignKey("PartId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkshopManager.API.Models.ServiceOrder", null)
+                        .WithMany("UsedParts")
+                        .HasForeignKey("ServiceOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkshopManager.API.Models.ServiceTask", "ServiceTask")
@@ -577,6 +717,8 @@ namespace WorkshopManager.API.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Tasks");
+
+                    b.Navigation("UsedParts");
                 });
 
             modelBuilder.Entity("WorkshopManager.API.Models.ServiceTask", b =>

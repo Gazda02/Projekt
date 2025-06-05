@@ -8,6 +8,7 @@ using WorkshopManager.API.Data;
 using WorkshopManager.API.Services;
 using WorkshopManager.API.Services.Interfaces;
 using NLog.Web;
+using Rotativa.AspNetCore;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 try
@@ -103,6 +104,10 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
+    
+    RotativaConfiguration.Setup(app.Environment.ContentRootPath, "Rotativa");
+
+    
     app.MapRazorPages();
     app.MapControllers();
 
@@ -110,6 +115,7 @@ try
     using (var scope = app.Services.CreateScope())
     {
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
         var roles = new[] { "Admin", "Mechanic", "Receptionist" };
 
         foreach (var role in roles)
@@ -117,6 +123,31 @@ try
             if (!await roleManager.RoleExistsAsync(role))
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        // Create default admin user
+        string adminEmail = "admin@workshop.com";
+        string adminPassword = "Admin@1234";
+
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
+        if (adminUser == null)
+        {
+            adminUser = new IdentityUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(adminUser, adminPassword);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+            else
+            {
+                logger.Error("Failed to create admin user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
     }
@@ -138,6 +169,7 @@ try
 
     app.Run();
 }
+
 catch (Exception ex)
 {
     logger.Error(ex, "Stopped program because of exception");
