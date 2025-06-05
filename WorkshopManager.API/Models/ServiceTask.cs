@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace WorkshopManager.API.Models;
 
@@ -22,6 +23,7 @@ public class ServiceTask
     public int ServiceOrderId { get; set; }
 
     // Navigation properties
+    [ValidateNever]
     public ServiceOrder ServiceOrder { get; set; }
     public List<UsedPart> UsedParts { get; set; } = new();
 } 

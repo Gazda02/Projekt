@@ -151,8 +151,8 @@
 /home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\appsettings.json
-C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.staticwebassets.endpoints.json
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.staticwebassets.runtime.json
+C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.staticwebassets.endpoints.json
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.exe
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.deps.json
 C:\Users\dudcz\RiderProjects\Projekt\WorkshopManager.API\bin\Debug\net8.0\WorkshopManager.API.runtimeconfig.json

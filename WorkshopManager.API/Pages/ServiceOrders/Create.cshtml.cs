@@ -44,7 +44,6 @@ public class CreateModel : PageModel
         {
             ServiceOrder.VehicleId = vehicleId.Value;
         }
-
         // Initialize with one empty task
         if (!Tasks.Any())
         {
@@ -54,6 +53,16 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        Console.WriteLine($"ModelState valid: {ModelState.IsValid}");
+        foreach (var key in ModelState.Keys)
+        {
+            var state = ModelState[key];
+            foreach (var error in state.Errors)
+            {
+                Console.WriteLine($"Model error at {key}: {error.ErrorMessage}");
+            }
+        }
+
         if (!ModelState.IsValid)
         {
             await OnGetAsync();

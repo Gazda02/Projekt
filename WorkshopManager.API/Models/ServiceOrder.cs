@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace WorkshopManager.API.Models;
 
@@ -19,11 +20,11 @@ public class ServiceOrder
     public int VehicleId { get; set; }
     
     // Navigation properties
+    [ValidateNever]
     public Vehicle Vehicle { get; set; }
     public List<ServiceTask> Tasks { get; set; } = new();
     public List<Comment> Comments { get; set; } = new();
 
-    // Total calculations
     public decimal TotalLaborCost => Tasks.Sum(t => t.LaborCost);
     public decimal TotalPartsCost => Tasks.Sum(t => t.UsedParts.Sum(p => p.Quantity * p.Part.UnitPrice));
     public decimal TotalCost => Tasks?.Sum(t => t.LaborCost + t.UsedParts.Sum(up => up.Part.UnitPrice * up.Quantity)) ?? 0;
