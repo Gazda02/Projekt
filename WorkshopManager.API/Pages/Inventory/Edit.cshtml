@@ -1,0 +1,39 @@
+@page "{id:int}"
+@model EditPartModel
+@{
+    ViewData["Title"] = "Edit Part";
+}
+<h2>Edit Part</h2>
+<form method="post">
+    <input type="hidden" asp-for="Part.Id" />
+    <div class="mb-3">
+        <label asp-for="Part.Name" class="form-label"></label>
+        <input asp-for="Part.Name" class="form-control" />
+        <span asp-validation-for="Part.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Part.PartNumber" class="form-label"></label>
+        <input asp-for="Part.PartNumber" class="form-control" />
+        <span asp-validation-for="Part.PartNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Part.UnitPrice" class="form-label"></label>
+        <input asp-for="Part.UnitPrice" class="form-control" />
+        <span asp-validation-for="Part.UnitPrice" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Part.StockQuantity" class="form-label"></label>
+        <input asp-for="Part.StockQuantity" class="form-control" />
+        <span asp-validation-for="Part.StockQuantity" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Part.Description" class="form-label"></label>
+        <textarea asp-for="Part.Description" class="form-control"></textarea>
+        <span asp-validation-for="Part.Description" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-page="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

@@ -1,0 +1,54 @@
+@page
+@model InventoryIndexModel
+@{
+    ViewData["Title"] = "Inventory";
+}
+@{
+    var canEdit = Model.UserRole == "Admin" || Model.UserRole == "Receptionist";
+}
+<h2>Inventory</h2>
+@if (canEdit)
+{
+    <a class="btn btn-primary mb-3" asp-page="Create">Add Part</a>
+}
+<form method="get" class="mb-3 d-flex" style="max-width: 500px;">
+    <input type="text" name="search" value="@Request.Query["search"]" class="form-control me-2" placeholder="Search by name or part number..." />
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+    <a asp-page="Index" class="btn btn-outline-secondary ms-2">Clear</a>
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Part Number</th>
+            <th>Unit Price</th>
+            <th>Stock</th>
+            <th>Description</th>
+            @if (canEdit)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var part in Model.Parts)
+    {
+        <tr>
+            <td>@part.Name</td>
+            <td>@part.PartNumber</td>
+            <td>@part.UnitPrice.ToString("C")</td>
+            <td>@part.StockQuantity</td>
+            <td>@part.Description</td>
+            @if (canEdit)
+            {
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-page="Edit" asp-route-id="@part.Id">Edit</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@part.Id" style="display:inline">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this part?')">Delete</button>
+                    </form>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table> 
