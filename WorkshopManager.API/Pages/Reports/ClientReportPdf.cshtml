@@ -1,5 +1,4 @@
-﻿@page
-@model ClientReportPdfViewModel
+﻿@model WorkshopManager.API.Pages.Reports.ClientReportPdfViewModel
 @{
     Layout = null; // Wyłączamy layout, aby PDF miał czystą strukturę
 }
@@ -82,7 +81,7 @@
     </table>
 
     <footer style="position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 10px;">
-        Raport wygenerowany przez system (WorkshopManager) – @DateTime.Now.ToString("yyyy-MM-dd")
+        Raport wygenerowany – @DateTime.Now.ToString("yyyy-MM-dd")
     </footer>
 </body>
 </html>
