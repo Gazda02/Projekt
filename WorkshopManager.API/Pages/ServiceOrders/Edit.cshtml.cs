@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using WorkshopManager.API.Data;
 using WorkshopManager.API.Models;
 
@@ -16,19 +16,30 @@ namespace WorkshopManager.API.Pages.ServiceOrders
             _context = context;
         }
 
-        [BindProperty]
+        // Ta właściwość pozwala nam pokazać detale zlecenia na stronie
         public ServiceOrder ServiceOrder { get; set; } = default!;
 
-        // Jeśli chcemy pozwolić na zmianę pojazdu, przygotowujemy SelectList
-        public SelectList? VehicleList { get; set; }
+        // Lista istniejących komentarzy (ładowana w OnGet)
+        public IList<Comment> Comments { get; set; } = new List<Comment>();
 
+        // Bindowane pole wyboru nowego statusu
+        [BindProperty]
+        [Display(Name = "Nowy status zlecenia")]
+        public OrderStatus SelectedStatus { get; set; }
+
+        // Bindowane pole dla treści nowego komentarza
+        [BindProperty]
+        [Display(Name = "Treść komentarza")]
+        [Required(ErrorMessage = "Treść komentarza jest wymagana.")]
+        public string NewCommentContent { get; set; } = string.Empty;
+
+
+        // ======================== OnGetAsync ========================
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            // Pobierz zlecenie wraz z powiązanym pojazdem (oraz klientem) oraz zadaniami
+            // Ładujemy zlecenie
             ServiceOrder = await _context.ServiceOrders
-                .Include(so => so.Vehicle)
-                    .ThenInclude(v => v.Customer)
-                .Include(so => so.Tasks)
+                .Include(so => so.Comments.OrderByDescending(c => c.CreatedAt))
                 .FirstOrDefaultAsync(so => so.Id == id);
 
             if (ServiceOrder == null)
@@ -36,81 +47,89 @@ namespace WorkshopManager.API.Pages.ServiceOrders
                 return NotFound();
             }
 
-            // Przygotowanie listy pojazdów do wyboru (opcjonalnie: możemy chcieć, aby użytkownik mógł zmienić VehicleId)
-            var vehicles = await _context.Vehicles
-                .Include(v => v.Customer)
-                .OrderBy(v => v.Customer.LastName)
-                .ThenBy(v => v.Customer.FirstName)
-                .Select(v => new
-                {
-                    v.Id,
-                    DisplayName = $"{v.Year} {v.Make} {v.Model} - {(v.Customer != null ? $"{v.Customer.LastName}, {v.Customer.FirstName}" : "Brak klienta")}"
-                })
-                .ToListAsync();
-            VehicleList = new SelectList(vehicles, "Id", "DisplayName", ServiceOrder.VehicleId);
+            // Przekazujemy listę komentarzy (posortowaną malejąco po dacie utworzenia)
+            Comments = ServiceOrder.Comments.OrderByDescending(c => c.CreatedAt).ToList();
+
+            // Ustawiamy wstępnie wybrany status
+            SelectedStatus = ServiceOrder.Status;
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+
+        // ======================== OnPostUpdateStatusAsync ========================
+        public async Task<IActionResult> OnPostUpdateStatusAsync(int id)
         {
+            // Usuwamy ewentualny błąd walidacji dla komentarza,
+            // bo przy zmianie statusu pole komentarza nie jest wymagane
+            ModelState.Remove(nameof(NewCommentContent));
+
             if (!ModelState.IsValid)
             {
-                // Jeśli walidacja nie przeszła, ponownie wczytujemy listę pojazdów i wracamy do strony
-                var vehicles = await _context.Vehicles
-                    .Include(v => v.Customer)
-                    .OrderBy(v => v.Customer.LastName)
-                    .ThenBy(v => v.Customer.FirstName)
-                    .Select(v => new
-                    {
-                        v.Id,
-                        DisplayName = $"{v.Year} {v.Make} {v.Model} - {(v.Customer != null ? $"{v.Customer.LastName}, {v.Customer.FirstName}" : "Brak klienta")}"
-                    })
-                    .ToListAsync();
-                VehicleList = new SelectList(vehicles, "Id", "DisplayName", ServiceOrder.VehicleId);
-
+                // W razie błędu ponownie ładujemy dane do widoku
+                ServiceOrder = await _context.ServiceOrders
+                    .Include(so => so.Comments.OrderByDescending(c => c.CreatedAt))
+                    .FirstOrDefaultAsync(so => so.Id == id)
+                    ?? new ServiceOrder();
+                Comments = ServiceOrder.Comments.OrderByDescending(c => c.CreatedAt).ToList();
                 return Page();
             }
 
-            // Załaduj istniejący encję z bazy (żeby EF Core śledził zmiany)
-            var existingOrder = await _context.ServiceOrders.FindAsync(ServiceOrder.Id);
-            if (existingOrder == null)
+            // Znajdujemy zlecenie po id i aktualizujemy status
+            var order = await _context.ServiceOrders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            // Zaktualizuj pola, które pozwalamy edytować
-            existingOrder.Description = ServiceOrder.Description;
-            existingOrder.VehicleId = ServiceOrder.VehicleId;
-            existingOrder.Status = ServiceOrder.Status;
-            existingOrder.AssignedMechanicId = ServiceOrder.AssignedMechanicId;
-            // (opcjonalnie: jeśli chcemy edytować CompletedAt lub IsCompleted)
-
-            // Jeśli chcemy aktualizować tylko główne pola zlecenia, nie musimy ingerować w ServiceOrder.Tasks
-            // Jeśli planujemy też edycję zadań, trzeba by dodatkowo synchronizować listę ServiceOrder.Tasks
-
-            try
+            order.Status = SelectedStatus;
+            if (SelectedStatus == OrderStatus.Completed)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ServiceOrderExists(ServiceOrder.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                order.CompletedAt = DateTime.UtcNow;
             }
 
-            return RedirectToPage("./Index");
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Status zlecenia został zaktualizowany.";
+            return RedirectToPage(new { id = id });
         }
 
-        private bool ServiceOrderExists(int id)
+
+        // ======================== OnPostAddCommentAsync ========================
+        public async Task<IActionResult> OnPostAddCommentAsync(int id)
         {
-            return _context.ServiceOrders.Any(e => e.Id == id);
+            if (!ModelState.IsValid)
+            {
+                // Ponownie ładujemy w przypadku walidacji treści komentarza
+                ServiceOrder = await _context.ServiceOrders
+                    .Include(so => so.Comments.OrderByDescending(c => c.CreatedAt))
+                    .FirstOrDefaultAsync(so => so.Id == id)
+                    ?? new ServiceOrder();
+                Comments = ServiceOrder.Comments.OrderByDescending(c => c.CreatedAt).ToList();
+                return Page();
+            }
+
+            // Sprawdzamy, czy zlecenie istnieje
+            var orderExists = await _context.ServiceOrders.AnyAsync(so => so.Id == id);
+            if (!orderExists)
+            {
+                return NotFound();
+            }
+
+            // Tworzymy komentarz
+            var comment = new Comment
+            {
+                ServiceOrderId = id,
+                Content = NewCommentContent,
+                AuthorId = User?.Identity?.Name ?? "Unknown",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Dodano komentarz.";
+            return RedirectToPage(new { id = id });
         }
     }
 }

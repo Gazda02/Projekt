@@ -1,0 +1,112 @@
+﻿@page "{id:int}"
+@model WorkshopManager.API.Pages.ServiceOrders.ChangesEditModel
+@using WorkshopManager.API.Models
+@{
+    ViewData["Title"] = "Edycja zadań i części dla zlecenia";
+}
+
+<h2>Zlecenie #@Model.ServiceOrder.Id – edycja zadań i części</h2>
+
+<div>
+    <strong>Opis zlecenia:</strong> @Model.ServiceOrder.Description <br />
+    <strong>Status:</strong> @Model.ServiceOrder.Status <br />
+</div>
+
+<hr />
+
+<h3>Dodaj nowe zadanie</h3>
+<form method="post" asp-page-handler="AddTask" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="NewTaskDescription">Opis zadania:</label>
+        <input asp-for="NewTaskDescription" class="form-control" />
+        <span asp-validation-for="NewTaskDescription" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewTaskLaborCost">Koszt robocizny:</label>
+        <input asp-for="NewTaskLaborCost" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="NewTaskLaborCost" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary"
+            onclick="this.disabled=true; this.form.submit();">
+      Dodaj zadanie
+    </button>
+</form>
+
+<hr />
+
+<h3>Istniejące zadania</h3>
+@if (Model.AllTasks != null && Model.AllTasks.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Opis</th>
+                <th>Koszt robocizny</th>
+                <th>Dodaj część</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.AllTasks)
+            {
+                <tr>
+                    <td>@t.Id</td>
+                    <td>@t.Description</td>
+                    <td>@t.LaborCost</td>
+                    <td>
+                        <!-- === BEGIN FORMULARZ DODAWANIA CZĘŚCI DLA ZADANIA t.Id === -->
+                        <form method="post" asp-page-handler="AddPart" asp-route-id="@Model.Id">
+                            <!-- To ukryte pole przekazuje identyfikator zadania -->
+                            <input type="hidden" name="TaskIdToAddPart" value="@t.Id" />
+
+                            <div class="form-row">
+                                <div class="col">
+                                    <select name="SelectedPartId" class="form-control">
+                                        <option value="">--- wybierz część ---</option>
+                                        @foreach (var p in Model.AllParts)
+                                        {
+                                            <option value="@p.Id">@p.Name (@p.StockQuantity dostępnych)</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input name="PartQuantity" type="number" min="1" placeholder="Ilość" class="form-control" />
+                                </div>
+                                <div class="col">
+                                    <!-- pojedynczy priorytetowy przycisk submit -->
+                                    <button type="submit" class="btn btn-sm btn-secondary"
+                                            onclick="this.disabled=true; this.form.submit();">
+                                        Dodaj
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- === KONIEC FORMULARZA ADD PART === -->
+
+                        @* Wyświetlanie dodanych już części pod zadaniem: *@
+                        @if (Model.TaskParts.TryGetValue(t.Id, out var partsForTask) && partsForTask.Any())
+                        {
+                            <ul class="mt-2">
+                                @foreach (var up in partsForTask)
+                                {
+                                    <li>@up.Part.Name – @up.Quantity szt. (cena: @up.Part.UnitPrice)</li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak zadań dla tego zlecenia.</p>
+}
+
+<hr />
+<a asp-page="./Index" class="btn btn-link">← Wróć do listy zleceń</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
