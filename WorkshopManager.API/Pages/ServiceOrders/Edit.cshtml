@@ -37,8 +37,10 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ServiceOrder.AssignedMechanicId" class="control-label">Przypisany mechanik (ID)</label>
-        <input asp-for="ServiceOrder.AssignedMechanicId" class="form-control" />
+        <label asp-for="ServiceOrder.AssignedMechanicId" class="control-label">Przypisany mechanik</label>
+        <select asp-for="ServiceOrder.AssignedMechanicId" class="form-control" asp-items="Model.MechanicList">
+            <option value="">-- Wybierz mechanika --</option>
+        </select>
         <span asp-validation-for="ServiceOrder.AssignedMechanicId" class="text-danger"></span>
     </div>
 

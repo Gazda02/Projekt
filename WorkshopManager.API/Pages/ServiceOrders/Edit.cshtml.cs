@@ -4,16 +4,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorkshopManager.API.Data;
 using WorkshopManager.API.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WorkshopManager.API.Pages.ServiceOrders
 {
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public EditModel(ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -21,6 +26,7 @@ namespace WorkshopManager.API.Pages.ServiceOrders
 
         // Jeśli chcemy pozwolić na zmianę pojazdu, przygotowujemy SelectList
         public SelectList? VehicleList { get; set; }
+        public SelectList? MechanicList { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -36,7 +42,7 @@ namespace WorkshopManager.API.Pages.ServiceOrders
                 return NotFound();
             }
 
-            // Przygotowanie listy pojazdów do wyboru (opcjonalnie: możemy chcieć, aby użytkownik mógł zmienić VehicleId)
+            // Przygotowanie listy pojazdów do wyboru
             var vehicles = await _context.Vehicles
                 .Include(v => v.Customer)
                 .OrderBy(v => v.Customer.LastName)
@@ -48,6 +54,19 @@ namespace WorkshopManager.API.Pages.ServiceOrders
                 })
                 .ToListAsync();
             VehicleList = new SelectList(vehicles, "Id", "DisplayName", ServiceOrder.VehicleId);
+
+            // Przygotowanie listy mechaników
+            var allUsers = _userManager.Users.ToList();
+            var mechanics = new List<IdentityUser>();
+            foreach (var user in allUsers)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Mechanic"))
+                {
+                    mechanics.Add(user);
+                }
+            }
+            MechanicList = new SelectList(mechanics, "Id", "Email", ServiceOrder.AssignedMechanicId);
 
             return Page();
         }
@@ -68,6 +87,19 @@ namespace WorkshopManager.API.Pages.ServiceOrders
                     })
                     .ToListAsync();
                 VehicleList = new SelectList(vehicles, "Id", "DisplayName", ServiceOrder.VehicleId);
+
+                // Przygotowanie listy mechaników
+                var allUsers = _userManager.Users.ToList();
+                var mechanics = new List<IdentityUser>();
+                foreach (var user in allUsers)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains("Mechanic"))
+                    {
+                        mechanics.Add(user);
+                    }
+                }
+                MechanicList = new SelectList(mechanics, "Id", "Email", ServiceOrder.AssignedMechanicId);
 
                 return Page();
             }
