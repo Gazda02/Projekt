@@ -1,11 +1,11 @@
 {
   "Files": [
     {
-      "Id": "/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/wwwroot/css/site.css",
+      "Id": "/home/gazdo/RiderProjects/Projekt/WorkshopManager.API/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
     {
-      "Id": "/home/gazdo/Documents/DotNet/Projekt/WorkshopManager.API/wwwroot/js/site.js",
+      "Id": "/home/gazdo/RiderProjects/Projekt/WorkshopManager.API/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
     {
