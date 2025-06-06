@@ -223,8 +223,6 @@ public class ServiceOrderService : IServiceOrderService
                 .Include(so => so.Vehicle)
                     .ThenInclude(v => v.Customer)
                 .Include(so => so.Tasks)
-                    .ThenInclude(t => t.UsedParts)
-                        .ThenInclude(up => up.Part)
                 .FirstOrDefaultAsync(so => so.Id == orderId);
 
             if (order == null)
@@ -261,11 +259,6 @@ public class ServiceOrderService : IServiceOrderService
             {
                 document.Add(new Paragraph($"- {task.Description}"));
                 document.Add(new Paragraph($"  Labor Cost: ${task.LaborCost:F2}"));
-
-                foreach (var usedPart in task.UsedParts)
-                {
-                    document.Add(new Paragraph($"  * {usedPart.Part?.Name} x{usedPart.Quantity} @ ${usedPart.Part?.UnitPrice:F2}"));
-                }
             }
 
             var total = await CalculateOrderTotalAsync(orderId);
@@ -287,17 +280,13 @@ public class ServiceOrderService : IServiceOrderService
         {
             var order = await _context.ServiceOrders
                 .Include(so => so.Tasks)
-                    .ThenInclude(t => t.UsedParts)
-                        .ThenInclude(up => up.Part)
                 .FirstOrDefaultAsync(so => so.Id == orderId);
 
             if (order == null)
                 throw new KeyNotFoundException($"Service order with ID {orderId} not found");
 
             var laborTotal = order.Tasks.Sum(t => t.LaborCost);
-            var partsTotal = order.Tasks
-                .SelectMany(t => t.UsedParts)
-                .Sum(up => up.Quantity * up.Part!.UnitPrice);
+            var partsTotal = order.UsedParts.Sum(up => up.Quantity * up.Part!.UnitPrice);
 
             return laborTotal + partsTotal;
         }
@@ -306,5 +295,22 @@ public class ServiceOrderService : IServiceOrderService
             _logger.LogError(ex, "Error occurred while calculating total for order ID: {Id}", orderId);
             throw;
         }
+    }
+
+    public async Task<UsedPart> AddPartToOrderAsync(int orderId, UsedPart usedPart)
+    {
+        var order = await _context.ServiceOrders.Include(o => o.UsedParts).FirstOrDefaultAsync(o => o.Id == orderId);
+        if (order == null) throw new KeyNotFoundException($"Service order with ID {orderId} not found");
+        usedPart.ServiceOrderId = orderId;
+        _context.UsedParts.Add(usedPart);
+        await _context.SaveChangesAsync();
+        return usedPart;
+    }
+
+    public async Task<IEnumerable<UsedPart>> GetOrderPartsAsync(int orderId)
+    {
+        var order = await _context.ServiceOrders.Include(o => o.UsedParts).ThenInclude(up => up.Part).FirstOrDefaultAsync(o => o.Id == orderId);
+        if (order == null) throw new KeyNotFoundException($"Service order with ID {orderId} not found");
+        return order.UsedParts;
     }
 } 

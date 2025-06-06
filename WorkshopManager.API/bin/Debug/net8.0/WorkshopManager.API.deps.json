@@ -13,8 +13,9 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.5",
           "Microsoft.AspNetCore.OpenApi": "8.0.2",
           "Microsoft.EntityFrameworkCore.Design": "8.0.5",
-          "NLog.Web.AspNetCore": "5.3.8",
+          "NLog.Web.AspNetCore": "5.4.0",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.0-beta.2",
+          "Rotativa.AspNetCore": "1.4.0",
           "Swashbuckle.AspNetCore": "6.5.0",
           "itext7": "9.2.0"
         },
@@ -748,35 +749,35 @@
           }
         }
       },
-      "NLog/5.2.8": {
+      "NLog/5.4.0": {
         "runtime": {
           "lib/netstandard2.0/NLog.dll": {
             "assemblyVersion": "5.0.0.0",
-            "fileVersion": "5.2.8.2366"
+            "fileVersion": "5.4.0.3182"
           }
         }
       },
-      "NLog.Extensions.Logging/5.3.8": {
+      "NLog.Extensions.Logging/5.4.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging": "8.0.0",
-          "NLog": "5.2.8"
+          "NLog": "5.4.0"
         },
         "runtime": {
           "lib/net8.0/NLog.Extensions.Logging.dll": {
             "assemblyVersion": "5.0.0.0",
-            "fileVersion": "5.3.8.469"
+            "fileVersion": "5.4.0.625"
           }
         }
       },
-      "NLog.Web.AspNetCore/5.3.8": {
+      "NLog.Web.AspNetCore/5.4.0": {
         "dependencies": {
-          "NLog.Extensions.Logging": "5.3.8"
+          "NLog.Extensions.Logging": "5.4.0"
         },
         "runtime": {
           "lib/net8.0/NLog.Web.AspNetCore.dll": {
             "assemblyVersion": "5.0.0.0",
-            "fileVersion": "5.3.8.1035"
+            "fileVersion": "5.4.0.1202"
           }
         }
       },
@@ -789,6 +790,14 @@
           "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.0.0"
+          }
+        }
+      },
+      "Rotativa.AspNetCore/1.4.0": {
+        "runtime": {
+          "lib/net8.0/Rotativa.AspNetCore.dll": {
+            "assemblyVersion": "1.4.0.0",
+            "fileVersion": "1.4.0.0"
           }
         }
       },
@@ -1798,26 +1807,26 @@
       "path": "mysqlconnector/2.3.1",
       "hashPath": "mysqlconnector.2.3.1.nupkg.sha512"
     },
-    "NLog/5.2.8": {
+    "NLog/5.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jAIELkWBs1CXFPp986KSGpDFQZHCFccO+LMbKBTTNm42KifaI1mYzFMFQQfuGmGMTrCx0TFPhDjHDE4cLAZWiQ==",
-      "path": "nlog/5.2.8",
-      "hashPath": "nlog.5.2.8.nupkg.sha512"
+      "sha512": "sha512-LwMcGSW3soF3/SL68rlJN3Eh3ktrAPycC3zZR/07OYBPraZUu0bygEC7kIN10lUQgMXT4s84Fi1chglGdGrQEg==",
+      "path": "nlog/5.4.0",
+      "hashPath": "nlog.5.4.0.nupkg.sha512"
     },
-    "NLog.Extensions.Logging/5.3.8": {
+    "NLog.Extensions.Logging/5.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6VD0lyeokWltL6j8lO7mS7v7lbuO/qn0F7kdvhKhEx1JvFyD39nzohOK3JvkVh4Nn3mrcMDCyDxvTvmiW55jQg==",
-      "path": "nlog.extensions.logging/5.3.8",
-      "hashPath": "nlog.extensions.logging.5.3.8.nupkg.sha512"
+      "sha512": "sha512-5T19INfbzRywZpyBGoQChsB/R7eHW9hR4Ml9O22NRjJpfltGIJ+rsoCcjwr2/V/E6i3/eXLTQwRAeDMICjWpTA==",
+      "path": "nlog.extensions.logging/5.4.0",
+      "hashPath": "nlog.extensions.logging.5.4.0.nupkg.sha512"
     },
-    "NLog.Web.AspNetCore/5.3.8": {
+    "NLog.Web.AspNetCore/5.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Rt2OCulpAF6rSrZWZzPgHikAI8SDKkq3/52xA/uJ4JtmNjoizULN/IBYtYlZojbPbXiFm3uadOO2rOvvMhjXBQ==",
-      "path": "nlog.web.aspnetcore/5.3.8",
-      "hashPath": "nlog.web.aspnetcore.5.3.8.nupkg.sha512"
+      "sha512": "sha512-Le6rbipSqeGVygbLGgRwZNMsbjJ+YnoAMJdZVhgjQimXwmYbDNkSswK6Mb32bKoC5aIg5mhw+hpAmgWdegs4Eg==",
+      "path": "nlog.web.aspnetcore/5.4.0",
+      "hashPath": "nlog.web.aspnetcore.5.4.0.nupkg.sha512"
     },
     "Pomelo.EntityFrameworkCore.MySql/8.0.0-beta.2": {
       "type": "package",
@@ -1825,6 +1834,13 @@
       "sha512": "sha512-rWLS2sdiMmVRAkFeKvGWeuYrEVpqGidK+K9yahbWu7SUMC372GW9KANIegv3YMM0GkvDITyR7gBes1+MUqy1oA==",
       "path": "pomelo.entityframeworkcore.mysql/8.0.0-beta.2",
       "hashPath": "pomelo.entityframeworkcore.mysql.8.0.0-beta.2.nupkg.sha512"
+    },
+    "Rotativa.AspNetCore/1.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zn0KgqCQqiTuNPYgeqrIJxXafjJUfDJBcUJIhAV5NgWSCX3DOEeg339zMJTbzcCyoJgGPL5LrG+IKZ3k8/Uk9Q==",
+      "path": "rotativa.aspnetcore/1.4.0",
+      "hashPath": "rotativa.aspnetcore.1.4.0.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

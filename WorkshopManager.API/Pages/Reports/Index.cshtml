@@ -1,0 +1,96 @@
+@page
+@model WorkshopManager.API.Pages.Reports.ClientReportModel
+@{
+ViewData["Title"] = "Raport kosztów dla klienta";
+}
+
+<h1 class="mb-4">Raport kosztów napraw dla klienta</h1>
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <form method="post" asp-page-handler="Generate">
+            <div class="mb-3">
+                <label asp-for="SelectedCustomerId" class="form-label">Wybierz klienta:</label>
+                <select asp-for="SelectedCustomerId" class="form-select"
+                        asp-items="@(new SelectList(Model.Clients, "Id", "LastName"))">
+
+                <option value="0">— Wybierz klienta —</option>
+                @* Wyświetli tylko nazwisko. Jeśli chcesz imię i nazwisko, zrób: $"@c.FirstName @c.LastName" *@
+                </select>
+                <span asp-validation-for="SelectedCustomerId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-bar-chart"></i> Generuj raport
+           </button>
+        </form>
+    </div>
+
+    <div class="col-md-6 text-end">
+        @* Przyciski do wygenerowania PDF (tylko gdy mamy już dane) *@
+        @if (Model.OrdersForClient != null && Model.OrdersForClient.Count > 0)
+        {
+        <form method="post" asp-page-handler="GeneratePdf" class="d-inline">
+            <input type="hidden" asp-for="SelectedCustomerId" />
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-file-earmark-pdf"></i> Pobierz PDF
+            </button>
+        </form>
+        }
+    </div>
+</div>
+
+@* Jeśli mamy jakieś zlecenia – wyświetlamy tabelę i sumę *@
+@if (Model.OrdersForClient != null && Model.OrdersForClient.Count > 0)
+{
+<h4 class="mb-3">Zlecenia klienta:
+    @{
+    var klient = Model.Clients.FirstOrDefault(c => c.Id == Model.SelectedCustomerId);
+    if (klient != null)
+    {
+    @($"{klient.FirstName} {klient.LastName}")
+    }
+    }
+</h4>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Data utworzenia</th>
+            <th>Pojazd</th>
+            <th>Status</th>
+            <th class="text-end">Koszt</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model.OrdersForClient)
+        {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.CreatedAt.ToString("yyyy-MM-dd")</td>
+            <td>@($"{order.Vehicle?.Year} {order.Vehicle?.Make} {order.Vehicle?.Model}")</td>
+            <td>@order.Status</td>
+            <td class="text-end">@order.TotalCost.ToString("C")</td>
+        </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr class="table-secondary">
+            <td colspan="4" class="fw-bold text-end">Łączny koszt:</td>
+            <td class="fw-bold text-end">@Model.TotalCostSum.ToString("C")</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+}
+else
+{
+@* Jeśli nie ma jeszcze danych lub wybrano klienta, ale nie ma żadnych zleceń *@
+@if (Model.SelectedCustomerId != 0)
+{
+<div class="alert alert-warning">
+    Klient nie ma żadnych zarejestrowanych zleceń serwisowych.
+</div>
+}
+}

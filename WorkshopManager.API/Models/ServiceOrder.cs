@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace WorkshopManager.API.Models;
@@ -22,8 +23,12 @@ public class ServiceOrder
     // Navigation properties
     [ValidateNever]
     public Vehicle Vehicle { get; set; }
+    
+    [BindProperty]
     public List<ServiceTask> Tasks { get; set; } = new();
     public List<Comment> Comments { get; set; } = new();
+    public ICollection<UsedPart> UsedParts { get; set; } = new List<UsedPart>();
+
 
     public decimal TotalLaborCost => Tasks.Sum(t => t.LaborCost);
     public decimal TotalPartsCost => Tasks.Sum(t => t.UsedParts.Sum(p => p.Quantity * p.Part.UnitPrice));

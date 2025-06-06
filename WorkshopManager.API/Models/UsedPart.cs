@@ -9,6 +9,7 @@ public class UsedPart
     [Required]
     [Range(1, 1000)]
     public int Quantity { get; set; }
+    public int ServiceOrderId { get; set; }
 
     // Foreign keys
     public int ServiceTaskId { get; set; }

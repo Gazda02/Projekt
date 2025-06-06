@@ -1,0 +1,87 @@
+﻿@model WorkshopManager.API.Pages.Reports.ClientReportPdfViewModel
+@{
+    Layout = null; // Wyłączamy layout, aby PDF miał czystą strukturę
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Raport klienta PDF</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12px;
+            margin: 20px;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px 8px;
+        }
+        th {
+            background-color: #eee;
+        }
+        tfoot td {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        .text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h2>Raport kosztów napraw – Klient: 
+        @{
+            var klient = Model?.Clients?.FirstOrDefault(c => c.Id == Model.SelectedCustomerId);
+            if (klient != null)
+            {
+                @($"{klient.FirstName} {klient.LastName}")
+            }
+        }
+    </h2>
+    <p>Data wygenerowania: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Data utworzenia</th>
+                <th>Pojazd</th>
+                <th>Status</th>
+                <th class="text-right">Koszt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.OrdersForClient)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td>@($"{order.Vehicle.Year} {order.Vehicle.Make} {order.Vehicle.Model}")</td>
+                    <td>@order.Status</td>
+                    <td class="text-right">@order.TotalCost.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right">Łączny koszt:</td>
+                <td class="text-right">@Model.TotalCostSum.ToString("C")</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <footer style="position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 10px;">
+        Raport wygenerowany – @DateTime.Now.ToString("yyyy-MM-dd")
+    </footer>
+</body>
+</html>
