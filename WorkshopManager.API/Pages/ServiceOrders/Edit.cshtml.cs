@@ -24,23 +24,37 @@ namespace WorkshopManager.API.Pages.ServiceOrders
         [BindProperty]
         public ServiceOrder ServiceOrder { get; set; } = default!;
 
+        [BindProperty]
+        public string Content { get; set; }
+
+        [BindProperty]
+        public List<ServiceTask> Tasks { get; set; }
+        [BindProperty]
+        public string NewTaskDescription { get; set; }
+        [BindProperty]
+        public decimal NewTaskLaborCost { get; set; }
+
         // Jeśli chcemy pozwolić na zmianę pojazdu, przygotowujemy SelectList
         public SelectList? VehicleList { get; set; }
         public SelectList? MechanicList { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            // Pobierz zlecenie wraz z powiązanym pojazdem (oraz klientem) oraz zadaniami
+            // Pobierz zlecenie wraz z powiązanym pojazdem (oraz klientem), zadaniami i komentarzami
             ServiceOrder = await _context.ServiceOrders
                 .Include(so => so.Vehicle)
                     .ThenInclude(v => v.Customer)
                 .Include(so => so.Tasks)
+                .Include(so => so.Comments)
                 .FirstOrDefaultAsync(so => so.Id == id);
 
             if (ServiceOrder == null)
             {
                 return NotFound();
             }
+
+            // Synchronizuj Tasks do bindowania
+            Tasks = ServiceOrder.Tasks.OrderBy(t => t.Id).ToList();
 
             // Przygotowanie listy pojazdów do wyboru
             var vehicles = await _context.Vehicles
@@ -138,6 +152,103 @@ namespace WorkshopManager.API.Pages.ServiceOrders
             }
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostAddCommentAsync(int orderId)
+        {
+            if (string.IsNullOrWhiteSpace(Content))
+            {
+                // Optionally, add a ModelState error and reload the page
+                return await OnGetAsync(orderId);
+            }
+
+            var order = await _context.ServiceOrders
+                .Include(o => o.Comments)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var authorId = user?.Email ?? "Anonim";
+
+            var comment = new Comment
+            {
+                Content = Content,
+                AuthorId = authorId,
+                CreatedAt = DateTime.UtcNow,
+                ServiceOrderId = orderId
+            };
+            order.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            // Clear the textarea after submit
+            Content = string.Empty;
+
+            return RedirectToPage(new { id = orderId });
+        }
+
+        public async Task<IActionResult> OnPostEditTasksAsync(int orderId)
+        {
+            var order = await _context.ServiceOrders
+                .Include(o => o.Tasks)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+                return NotFound();
+
+            // Aktualizuj istniejące taski
+            foreach (var postedTask in Tasks)
+            {
+                var dbTask = order.Tasks.FirstOrDefault(t => t.Id == postedTask.Id);
+                if (dbTask != null)
+                {
+                    dbTask.Description = postedTask.Description;
+                    dbTask.LaborCost = postedTask.LaborCost;
+                    dbTask.IsCompleted = postedTask.IsCompleted;
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToPage(new { id = orderId });
+        }
+
+        public async Task<IActionResult> OnPostAddTaskAsync(int orderId)
+        {
+            if (string.IsNullOrWhiteSpace(NewTaskDescription))
+                return await OnGetAsync(orderId);
+            var order = await _context.ServiceOrders
+                .Include(o => o.Tasks)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+                return NotFound();
+            var newTask = new ServiceTask
+            {
+                Description = NewTaskDescription,
+                LaborCost = NewTaskLaborCost,
+                ServiceOrderId = orderId,
+                IsCompleted = false
+            };
+            order.Tasks.Add(newTask);
+            await _context.SaveChangesAsync();
+            NewTaskDescription = string.Empty;
+            NewTaskLaborCost = 0;
+            return RedirectToPage(new { id = orderId });
+        }
+
+        public async Task<IActionResult> OnPostDeleteTaskAsync(int orderId, int taskId)
+        {
+            var order = await _context.ServiceOrders
+                .Include(o => o.Tasks)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+                return NotFound();
+            var task = order.Tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task != null)
+            {
+                _context.ServiceTasks.Remove(task);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToPage(new { id = orderId });
         }
 
         private bool ServiceOrderExists(int id)

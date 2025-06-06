@@ -7,6 +7,7 @@
 <h2>Edytuj zlecenie serwisowe</h2>
 
 <form method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="ServiceOrder.Id" />
 
     <div class="form-group">
@@ -53,6 +54,102 @@
 
     <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
     <a asp-page="./Index" class="btn btn-secondary">Anuluj</a>
+</form>
+
+<hr />
+<h3>Komentarze</h3>
+@if (Model.ServiceOrder.Comments != null && Model.ServiceOrder.Comments.Any())
+{
+    <ul class="list-group mb-3">
+        @foreach (var comment in Model.ServiceOrder.Comments.OrderByDescending(c => c.CreatedAt))
+        {
+            <li class="list-group-item">
+                <strong>@comment.AuthorId</strong> <span class="text-muted">(@comment.CreatedAt.ToString("g"))</span><br />
+                @comment.Content
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Brak komentarzy.</p>
+}
+
+<h4>Dodaj komentarz</h4>
+<form method="post" asp-page-handler="AddComment">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="orderId" value="@Model.ServiceOrder.Id" />
+    <div class="form-group">
+        <textarea name="Content" class="form-control" rows="3" required placeholder="Wpisz komentarz..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Dodaj komentarz</button>
+</form>
+
+<hr />
+<h3>Zadania serwisowe</h3>
+@if (Model.ServiceOrder.Tasks != null && Model.ServiceOrder.Tasks.Any())
+{
+    <form method="post" asp-page-handler="EditTasks">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="orderId" value="@Model.ServiceOrder.Id" />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Opis</th>
+                    <th>Koszt robocizny</th>
+                    <th>Wykonane?</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.ServiceOrder.Tasks.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="hidden" name="Tasks[@i].Id" value="@Model.ServiceOrder.Tasks[i].Id" />
+                            <input type="text" name="Tasks[@i].Description" value="@Model.ServiceOrder.Tasks[i].Description" class="form-control" required />
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="Tasks[@i].LaborCost" value="@Model.ServiceOrder.Tasks[i].LaborCost" class="form-control" required />
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" name="Tasks[@i].IsCompleted" value="true" @(Model.ServiceOrder.Tasks[i].IsCompleted ? "checked" : "") />
+                        </td>
+                        <td>
+                            <form method="post" asp-page-handler="DeleteTask" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="orderId" value="@Model.ServiceOrder.Id" />
+                                <input type="hidden" name="taskId" value="@Model.ServiceOrder.Tasks[i].Id" />
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Na pewno usunąć to zadanie?')">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Zapisz zmiany w zadaniach</button>
+    </form>
+}
+else
+{
+    <p>Brak zadań serwisowych.</p>
+}
+
+<h4>Dodaj nowe zadanie</h4>
+<form method="post" asp-page-handler="AddTask">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="orderId" value="@Model.ServiceOrder.Id" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input type="text" name="NewTaskDescription" class="form-control" placeholder="Opis zadania" required />
+        </div>
+        <div class="form-group col-md-3">
+            <input type="number" step="0.01" name="NewTaskLaborCost" class="form-control" placeholder="Koszt robocizny" required />
+        </div>
+        <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-success">Dodaj zadanie</button>
+        </div>
+    </div>
 </form>
 
 @section Scripts {
