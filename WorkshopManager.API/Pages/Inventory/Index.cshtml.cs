@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Components.Forms;
 using WorkshopManager.API.Data;
 using WorkshopManager.API.Models;
 
@@ -56,7 +57,15 @@ public class InventoryIndexModel : PageModel
         if (part != null)
         {
             _context.Parts.Remove(part);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Forbid();
+            }
+            
         }
         return RedirectToPage();
     }

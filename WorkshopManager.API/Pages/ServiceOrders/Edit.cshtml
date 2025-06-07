@@ -1,57 +1,83 @@
-@page "{id:int}"
+﻿@page "{id:int}"
 @model WorkshopManager.API.Pages.ServiceOrders.EditModel
+@using WorkshopManager.API.Models
 @{
     ViewData["Title"] = "Edytuj zlecenie";
 }
 
-<h2>Edytuj zlecenie serwisowe</h2>
+<h2>Edytuj zlecenie #@Model.ServiceOrder.Id</h2>
 
-<form method="post">
-    <input type="hidden" asp-for="ServiceOrder.Id" />
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 
+<div class="mb-4">
+    <strong>Opis zlecenia:</strong> @Model.ServiceOrder.Description <br />
+    <strong>Data utworzenia:</strong> @Model.ServiceOrder.CreatedAt.ToLocalTime().ToString("g") <br />
+    <strong>Aktualny status:</strong> @Model.ServiceOrder.Status <br />
+</div>
+
+<hr />
+
+<!-- ===== 1. Formularz do zmiany statusu ===== -->
+<form method="post" asp-page-handler="UpdateStatus" asp-route-id="@Model.ServiceOrder.Id">
     <div class="form-group">
-        <label asp-for="ServiceOrder.Description" class="control-label"></label>
-        <input asp-for="ServiceOrder.Description" class="form-control" />
-        <span asp-validation-for="ServiceOrder.Description" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ServiceOrder.VehicleId" class="control-label">Pojazd</label>
-        <select asp-for="ServiceOrder.VehicleId" class="form-control"
-                asp-items="Model.VehicleList">
-            <option value="">-- Wybierz pojazd --</option>
+        <label asp-for="SelectedStatus">Nowy status:</label>
+        <select asp-for="SelectedStatus" class="form-control">
+            @foreach (OrderStatus s in Enum.GetValues(typeof(OrderStatus)))
+            {
+                if (Model.ServiceOrder.Status == s)
+                {
+                    <option value="@s" selected="selected">@s</option>
+                }
+                else
+                {
+                    <option value="@s">@s</option>
+                }
+            }
         </select>
-        <span asp-validation-for="ServiceOrder.VehicleId" class="text-danger"></span>
+        <span asp-validation-for="SelectedStatus" class="text-danger"></span>
     </div>
-
-    <div class="form-group">
-        <label asp-for="ServiceOrder.Status" class="control-label"></label>
-        <select asp-for="ServiceOrder.Status" class="form-control">
-            <option value="">-- Wybierz status --</option>
-            <option value="Created">Utworzone</option>
-            <option value="InProgress">W trakcie</option>
-            <option value="Completed">Zakończone</option>
-            <option value="Cancelled">Anulowane</option>
-        </select>
-        <span asp-validation-for="ServiceOrder.Status" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ServiceOrder.AssignedMechanicId" class="control-label">Przypisany mechanik (ID)</label>
-        <input asp-for="ServiceOrder.AssignedMechanicId" class="form-control" />
-        <span asp-validation-for="ServiceOrder.AssignedMechanicId" class="text-danger"></span>
-    </div>
-
-    <!-- 
-        Jeśli chcemy dodać edycję zadań (ServiceOrder.Tasks), 
-        należy zaimplementować dodatkową logikę w EditModel (np. synchronizację listy),
-        oraz odpowiednią część w widoku: edycja Description i LaborCost dla każdego zadania. 
-        Na razie pokazuję tylko pola główne zlecenia. 
-    -->
-
-    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-    <a asp-page="./Index" class="btn btn-secondary">Anuluj</a>
+    <button type="submit" class="btn btn-primary">Zapisz zmianę statusu</button>
 </form>
+
+<hr />
+
+<!-- ===== 2. Sekcja komentarzy ===== -->
+<h3>Komentarze</h3>
+@if (Model.Comments != null && Model.Comments.Any())
+{
+    <ul class="list-group mb-3">
+        @foreach (var c in Model.Comments)
+        {
+            <li class="list-group-item">
+                <strong>Treść:</strong> @c.Content<br />
+                <em>@c.CreatedAt.ToLocalTime().ToString("g")</em>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted">Brak komentarzy.</p>
+}
+
+<!-- Formularz dodawania komentarza -->
+<form method="post" asp-page-handler="AddComment" asp-route-id="@Model.ServiceOrder.Id" class="mb-5">
+    <div class="form-group">
+        <label asp-for="NewCommentContent">Nowy komentarz:</label>
+        <textarea asp-for="NewCommentContent" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="NewCommentContent" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-secondary">Dodaj komentarz</button>
+</form>
+
+<hr />
+
+<a asp-page="./ChangesEdit" asp-route-id="@Model.ServiceOrder.Id" class="btn btn-success">
+    Przejdź do edycji zadań i części
+</a>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
