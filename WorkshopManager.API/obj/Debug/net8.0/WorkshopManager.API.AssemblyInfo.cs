@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WorkshopManager.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d67bf6bc40643dd21c85ac240349ab5daa83413e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a25078d42171181a5e283d4a6e5ebd0838be712")]
 [assembly: System.Reflection.AssemblyProductAttribute("WorkshopManager.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WorkshopManager.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

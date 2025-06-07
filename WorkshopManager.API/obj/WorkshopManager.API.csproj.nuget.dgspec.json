@@ -68,6 +68,10 @@
               "target": "Package",
               "version": "[8.0.0-beta.2, )"
             },
+            "Riok.Mapperly": {
+              "target": "Package",
+              "version": "[4.2.1, )"
+            },
             "Rotativa.AspNetCore": {
               "target": "Package",
               "version": "[1.4.0, )"

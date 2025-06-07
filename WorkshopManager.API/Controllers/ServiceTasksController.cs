@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.AspNetCore.Mvc;
+using WorkshopManager.API.Mapperly;
 using WorkshopManager.API.Models;
 using WorkshopManager.API.Services.Interfaces;
 
@@ -11,11 +13,15 @@ public class ServiceTasksController : ControllerBase
 {
     private readonly IServiceTaskService _serviceTaskService;
     private readonly ILogger<ServiceTasksController> _logger;
+    private readonly TaskMapper _mapper;
+    private readonly UsedPartMapper _usedPartMapper;
 
-    public ServiceTasksController(IServiceTaskService serviceTaskService, ILogger<ServiceTasksController> logger)
+    public ServiceTasksController(IServiceTaskService serviceTaskService, ILogger<ServiceTasksController> logger, TaskMapper mapper, UsedPartMapper usedPartMapper)
     {
         _serviceTaskService = serviceTaskService;
         _logger = logger;
+        _mapper = mapper;
+        _usedPartMapper = usedPartMapper;
     }
 
     [HttpGet]
@@ -24,7 +30,7 @@ public class ServiceTasksController : ControllerBase
         try
         {
             var tasks = await _serviceTaskService.GetAllServiceTasksAsync();
-            return Ok(tasks);
+            return Ok(tasks.Select(x => _mapper.Map(x)));
         }
         catch (Exception ex)
         {
@@ -43,7 +49,7 @@ public class ServiceTasksController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(task);
+            return Ok(_mapper.Map(task));
         }
         catch (Exception ex)
         {
@@ -127,7 +133,7 @@ public class ServiceTasksController : ControllerBase
         try
         {
             var parts = await _serviceTaskService.GetTaskPartsAsync(id);
-            return Ok(parts);
+            return Ok(parts.Select(p => _usedPartMapper.Map(p)));
         }
         catch (Exception ex)
         {
@@ -158,7 +164,7 @@ public class ServiceTasksController : ControllerBase
         try
         {
             var tasks = await _serviceTaskService.GetMechanicTasksAsync(mechanicId);
-            return Ok(tasks);
+            return Ok(tasks.Select(t => _mapper.Map(t)));
         }
         catch (Exception ex)
         {

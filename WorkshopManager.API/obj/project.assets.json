@@ -1240,6 +1240,22 @@
           }
         }
       },
+      "Riok.Mapperly/4.2.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Riok.Mapperly.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Riok.Mapperly.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/Riok.Mapperly.targets": {}
+        }
+      },
       "Rotativa.AspNetCore/1.4.0": {
         "type": "package",
         "compile": {
@@ -4522,6 +4538,32 @@
         "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
+    "Riok.Mapperly/4.2.1": {
+      "sha512": "UZeQSieVlHr48t64J4k2s/lvbMeCXvzsXqV2A/0wyNdPpW8Cyn47+9mfWFJjouPxoSFfEhDbxg+WRbFIHvq4Zw==",
+      "type": "package",
+      "path": "riok.mapperly/4.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "analyzers/roslyn4.0/dotnet/cs/Riok.Mapperly.Abstractions.dll",
+        "analyzers/roslyn4.0/dotnet/cs/Riok.Mapperly.dll",
+        "analyzers/roslyn4.11/dotnet/cs/Riok.Mapperly.Abstractions.dll",
+        "analyzers/roslyn4.11/dotnet/cs/Riok.Mapperly.dll",
+        "analyzers/roslyn4.4/dotnet/cs/Riok.Mapperly.Abstractions.dll",
+        "analyzers/roslyn4.4/dotnet/cs/Riok.Mapperly.dll",
+        "analyzers/roslyn4.5/dotnet/cs/Riok.Mapperly.Abstractions.dll",
+        "analyzers/roslyn4.5/dotnet/cs/Riok.Mapperly.dll",
+        "analyzers/roslyn4.7/dotnet/cs/Riok.Mapperly.Abstractions.dll",
+        "analyzers/roslyn4.7/dotnet/cs/Riok.Mapperly.dll",
+        "build/Riok.Mapperly.targets",
+        "lib/netstandard2.0/Riok.Mapperly.Abstractions.dll",
+        "lib/netstandard2.0/Riok.Mapperly.Abstractions.xml",
+        "logo.png",
+        "riok.mapperly.4.2.1.nupkg.sha512",
+        "riok.mapperly.nuspec"
+      ]
+    },
     "Rotativa.AspNetCore/1.4.0": {
       "sha512": "zn0KgqCQqiTuNPYgeqrIJxXafjJUfDJBcUJIhAV5NgWSCX3DOEeg339zMJTbzcCyoJgGPL5LrG+IKZ3k8/Uk9Q==",
       "type": "package",
@@ -7711,6 +7753,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 8.0.5",
       "NLog.Web.AspNetCore >= 5.4.0",
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.0-beta.2",
+      "Riok.Mapperly >= 4.2.1",
       "Rotativa.AspNetCore >= 1.4.0",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "itext7 >= 9.2.0"
@@ -7782,6 +7825,10 @@
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",
             "version": "[8.0.0-beta.2, )"
+          },
+          "Riok.Mapperly": {
+            "target": "Package",
+            "version": "[4.2.1, )"
           },
           "Rotativa.AspNetCore": {
             "target": "Package",

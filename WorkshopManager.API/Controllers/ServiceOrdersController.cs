@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WorkshopManager.API.Mapperly;
 using WorkshopManager.API.Models;
 using WorkshopManager.API.Services.Interfaces;
 
@@ -10,11 +11,15 @@ public class ServiceOrdersController : ControllerBase
 {
     private readonly IServiceOrderService _serviceOrderService;
     private readonly ILogger<ServiceOrdersController> _logger;
+    private readonly OrderMapper _mapper;
+    private readonly CommentMapper _commentMapper;
 
-    public ServiceOrdersController(IServiceOrderService serviceOrderService, ILogger<ServiceOrdersController> logger)
+    public ServiceOrdersController(IServiceOrderService serviceOrderService, ILogger<ServiceOrdersController> logger, OrderMapper mapper, CommentMapper commentMapper)
     {
         _serviceOrderService = serviceOrderService;
         _logger = logger;
+        _mapper = mapper;
+        _commentMapper = commentMapper;
     }
 
     [HttpGet]
@@ -23,7 +28,7 @@ public class ServiceOrdersController : ControllerBase
         try
         {
             var orders = await _serviceOrderService.GetAllServiceOrdersAsync();
-            return Ok(orders);
+            return Ok(orders.Select(x => _mapper.Map(x)));
         }
         catch (Exception ex)
         {
@@ -38,7 +43,7 @@ public class ServiceOrdersController : ControllerBase
         try
         {
             var orders = await _serviceOrderService.GetActiveServiceOrdersAsync();
-            return Ok(orders);
+            return Ok(orders.Select(x => _mapper.Map(x)));
         }
         catch (Exception ex)
         {
@@ -57,7 +62,7 @@ public class ServiceOrdersController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(order);
+            return Ok(_mapper.Map(order));
         }
         catch (Exception ex)
         {
@@ -152,7 +157,7 @@ public class ServiceOrdersController : ControllerBase
         try
         {
             var comments = await _serviceOrderService.GetOrderCommentsAsync(id);
-            return Ok(comments);
+            return Ok(comments.Select(c => _commentMapper.Map(c)));
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WorkshopManager.API.Mapperly;
 using WorkshopManager.API.Models;
 using WorkshopManager.API.Services.Interfaces;
 
@@ -10,11 +11,15 @@ public class VehiclesController : ControllerBase
 {
     private readonly IVehicleService _vehicleService;
     private readonly ILogger<VehiclesController> _logger;
+    private readonly VehicleMapper _mapper;
+    private readonly OrderMapper _orderMapper;
 
-    public VehiclesController(IVehicleService vehicleService, ILogger<VehiclesController> logger)
+    public VehiclesController(IVehicleService vehicleService, ILogger<VehiclesController> logger, VehicleMapper mapper, OrderMapper orderMapper)
     {
         _vehicleService = vehicleService;
         _logger = logger;
+        _mapper = mapper;
+        _orderMapper = orderMapper;
     }
 
     [HttpGet]
@@ -23,7 +28,7 @@ public class VehiclesController : ControllerBase
         try
         {
             var vehicles = await _vehicleService.GetAllVehiclesAsync();
-            return Ok(vehicles);
+            return Ok(vehicles.Select(v => _mapper.Map(v)));
         }
         catch (Exception ex)
         {
@@ -42,7 +47,7 @@ public class VehiclesController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(vehicle);
+            return Ok(_mapper.Map(vehicle));
         }
         catch (Exception ex)
         {
@@ -61,7 +66,7 @@ public class VehiclesController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(vehicle);
+            return Ok(_mapper.Map(vehicle));
         }
         catch (Exception ex)
         {
@@ -126,7 +131,7 @@ public class VehiclesController : ControllerBase
         try
         {
             var history = await _vehicleService.GetVehicleServiceHistoryAsync(id);
-            return Ok(history);
+            return Ok(history.Select(o => _orderMapper.Map(o)));
         }
         catch (Exception ex)
         {

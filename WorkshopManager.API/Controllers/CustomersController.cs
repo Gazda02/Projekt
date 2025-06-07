@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WorkshopManager.API.Mapperly;
 using WorkshopManager.API.Models;
 using WorkshopManager.API.Services.Interfaces;
 
@@ -10,11 +11,13 @@ public class CustomersController : ControllerBase
 {
     private readonly ICustomerService _customerService;
     private readonly ILogger<CustomersController> _logger;
+    private readonly CustomerMapper _mapper;
 
-    public CustomersController(ICustomerService customerService, ILogger<CustomersController> logger)
+    public CustomersController(ICustomerService customerService, ILogger<CustomersController> logger, CustomerMapper mapper)
     {
         _customerService = customerService;
         _logger = logger;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -23,7 +26,7 @@ public class CustomersController : ControllerBase
         try
         {
             var customers = await _customerService.GetAllCustomersAsync();
-            return Ok(customers);
+            return Ok(customers.Select(c => _mapper.Map(c)));
         }
         catch (Exception ex)
         {
@@ -42,7 +45,7 @@ public class CustomersController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(customer);
+            return Ok(_mapper.Map(customer));
         }
         catch (Exception ex)
         {
