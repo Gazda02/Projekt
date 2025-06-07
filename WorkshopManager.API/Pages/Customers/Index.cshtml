@@ -27,7 +27,7 @@
             <td>
                 <a class="btn btn-sm btn-warning" asp-page="Edit" asp-route-id="@customer.Id">Edytuj</a>
                 <form method="post" asp-page-handler="Delete" asp-route-id="@customer.Id" style="display:inline">
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Na pewno usunąć?')">Usuń</button>
+                    <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
                 </form>
             </td>
         </tr>

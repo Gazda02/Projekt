@@ -15,6 +15,7 @@
           "Microsoft.EntityFrameworkCore.Design": "8.0.5",
           "NLog.Web.AspNetCore": "5.4.0",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.0-beta.2",
+          "Riok.Mapperly": "4.2.1",
           "Rotativa.AspNetCore": "1.4.0",
           "Swashbuckle.AspNetCore": "6.5.0",
           "itext7": "9.2.0"
@@ -790,6 +791,14 @@
           "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.0.0"
+          }
+        }
+      },
+      "Riok.Mapperly/4.2.1": {
+        "runtime": {
+          "lib/netstandard2.0/Riok.Mapperly.Abstractions.dll": {
+            "assemblyVersion": "4.2.1.0",
+            "fileVersion": "4.2.1.0"
           }
         }
       },
@@ -1834,6 +1843,13 @@
       "sha512": "sha512-rWLS2sdiMmVRAkFeKvGWeuYrEVpqGidK+K9yahbWu7SUMC372GW9KANIegv3YMM0GkvDITyR7gBes1+MUqy1oA==",
       "path": "pomelo.entityframeworkcore.mysql/8.0.0-beta.2",
       "hashPath": "pomelo.entityframeworkcore.mysql.8.0.0-beta.2.nupkg.sha512"
+    },
+    "Riok.Mapperly/4.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UZeQSieVlHr48t64J4k2s/lvbMeCXvzsXqV2A/0wyNdPpW8Cyn47+9mfWFJjouPxoSFfEhDbxg+WRbFIHvq4Zw==",
+      "path": "riok.mapperly/4.2.1",
+      "hashPath": "riok.mapperly.4.2.1.nupkg.sha512"
     },
     "Rotativa.AspNetCore/1.4.0": {
       "type": "package",

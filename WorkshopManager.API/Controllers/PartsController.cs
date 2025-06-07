@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorkshopManager.API.Mapperly;
 using WorkshopManager.API.Models;
 using WorkshopManager.API.Services.Interfaces;
 
@@ -11,11 +12,13 @@ public class PartsController : ControllerBase
 {
     private readonly IPartService _partService;
     private readonly ILogger<PartsController> _logger;
+    private readonly PartMapper _mapper;
 
-    public PartsController(IPartService partService, ILogger<PartsController> logger)
+    public PartsController(IPartService partService, ILogger<PartsController> logger, PartMapper mapper)
     {
         _partService = partService;
         _logger = logger;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -24,7 +27,7 @@ public class PartsController : ControllerBase
         try
         {
             var parts = await _partService.GetAllPartsAsync();
-            return Ok(parts);
+            return Ok(parts.Select(part => _mapper.Map(part)));
         }
         catch (Exception ex)
         {
@@ -43,7 +46,7 @@ public class PartsController : ControllerBase
             {
                 return NotFound();
             }
-            return Ok(part);
+            return Ok(_mapper.Map(part));
         }
         catch (Exception ex)
         {
@@ -111,7 +114,7 @@ public class PartsController : ControllerBase
         try
         {
             var parts = await _partService.SearchPartsAsync(query);
-            return Ok(parts);
+            return Ok(parts.Select(p => _mapper.Map(p)));
         }
         catch (Exception ex)
         {
@@ -127,7 +130,7 @@ public class PartsController : ControllerBase
         try
         {
             var parts = await _partService.GetLowStockPartsAsync();
-            return Ok(parts);
+            return Ok(parts.Select(p => _mapper.Map(p)));
         }
         catch (Exception ex)
         {

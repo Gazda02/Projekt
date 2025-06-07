@@ -453,3 +453,4 @@ C:/Users/dudcz/RiderProjects/Projekt/WorkshopManager.API/bin/Debug/net8.0/Rotati
 /home/gazdo/RiderProjects/Projekt/WorkshopManager.API/obj/Debug/net8.0/WorkshopManager.API.pdb
 /home/gazdo/RiderProjects/Projekt/WorkshopManager.API/obj/Debug/net8.0/WorkshopManager.API.genruntimeconfig.cache
 /home/gazdo/RiderProjects/Projekt/WorkshopManager.API/obj/Debug/net8.0/ref/WorkshopManager.API.dll
+/home/gazdo/RiderProjects/Projekt/WorkshopManager.API/bin/Debug/net8.0/Riok.Mapperly.Abstractions.dll

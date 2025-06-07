@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NExtVz3dQGU=",
+  "dgSpecHash": "/wYkxTCBKB8=",
   "success": true,
   "projectFilePath": "/home/gazdo/RiderProjects/Projekt/WorkshopManager.API/WorkshopManager.API.csproj",
   "expectedPackageFiles": [
@@ -64,6 +64,7 @@
     "/home/gazdo/.nuget/packages/nlog.extensions.logging/5.4.0/nlog.extensions.logging.5.4.0.nupkg.sha512",
     "/home/gazdo/.nuget/packages/nlog.web.aspnetcore/5.4.0/nlog.web.aspnetcore.5.4.0.nupkg.sha512",
     "/home/gazdo/.nuget/packages/pomelo.entityframeworkcore.mysql/8.0.0-beta.2/pomelo.entityframeworkcore.mysql.8.0.0-beta.2.nupkg.sha512",
+    "/home/gazdo/.nuget/packages/riok.mapperly/4.2.1/riok.mapperly.4.2.1.nupkg.sha512",
     "/home/gazdo/.nuget/packages/rotativa.aspnetcore/1.4.0/rotativa.aspnetcore.1.4.0.nupkg.sha512",
     "/home/gazdo/.nuget/packages/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "/home/gazdo/.nuget/packages/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
